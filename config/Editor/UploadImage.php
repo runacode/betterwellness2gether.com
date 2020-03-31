@@ -32,7 +32,11 @@ if (  isset($_FILES['UploadImage'])) {
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
     if (move_uploaded_file($_FILES["UploadImage"]["tmp_name"], $target_file)) {
-        echo "The file ". basename( $_FILES["UploadImage"]["name"]). " has been uploaded.";
+        if(!isset($_REQUEST['json'])) {
+            echo "The file " . basename($_FILES["UploadImage"]["name"]) . " has been uploaded.";
+        }else{
+            echo json_encode(array("file"=>"/images/".basename($_FILES["UploadImage"]["name"])));
+        }
     } else {
         echo "Sorry, there was an error uploading your file.";
     }
