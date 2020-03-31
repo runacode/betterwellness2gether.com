@@ -8,7 +8,7 @@ foreach ($data->$ContentName as $item) { ?>
     <?php
 
     foreach ($item->Text as $text) { ?>
-        <?= $text ?>
+        <?php eval(' ?>'.$text.'<?php ');  ?>
         <?php
 
     }
