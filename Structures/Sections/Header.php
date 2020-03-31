@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title><?= $data->Title ?></title>
+    <title><?= $data->SiteTextLogo ?></title>
     <meta charset="utf-8"/>
     <?php foreach ($data->MetaTags as $item) { ?>
         <meta name="<?php echo $item->Name; ?>" content="<?php echo $item->Content; ?>"/>
