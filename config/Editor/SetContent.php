@@ -59,6 +59,14 @@ if (!preg_match('/\[\]$/', $_REQUEST['dp'])) {
 <button onclick="SwitchEditor()" type="button">Switch Editor</button>
     <div id="TextNodes">
         <br/>
+        <select id="ImageUrl" name="ImageUrl">
+            <?php foreach ($Images as $image) { ?>
+
+                <option value="<?php echo "images/" . $image; ?>" <?php if (strcmp("images/" . $image, $Content->Url) === 0) echo "selected"; ?> ><?php echo $image; ?></option>
+            <?php } ?>
+        </select>
+
+        <button type="button" onclick="InsertImage()" class="fit" value="Set Content" name="SetContent">Insert Image</button>
         <?php foreach ($Content->Text as $Text) { ?>
             <div>
                 <label for="Text">Html sections
@@ -108,7 +116,12 @@ if (!preg_match('/\[\]$/', $_REQUEST['dp'])) {
             "                </label>\n" +
             "                <textarea name=\"Text[]\"></textarea>"))
     }
+    function InsertImage(){
+        var Image = $('#ImageUrl').val()
 
+        var range = Edtiro.getSelection();
+        Edtiro.insertEmbed(range.index, 'image', '/'+ Image, Quill.sources.USER);
+    }
     function SwitchEditor() {
         $('.editor').toggle();
         $('.ql-toolbar').toggle();
