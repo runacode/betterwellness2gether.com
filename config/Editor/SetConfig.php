@@ -33,7 +33,8 @@ $CssIn = $overwritedata['CssIn'];
 $JavascriptIn = $overwritedata['JavascriptIn'];
 $CssList = $overwritedata['CssList'];
 $JavascriptList = $overwritedata['JavascriptList'];
-
+$CloakerPath = $overwritedata['CloakerPath'];
+$CloakerID = $overwritedata['CloakerID'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -51,6 +52,16 @@ $JavascriptList = $overwritedata['JavascriptList'];
 <form method="post" enctype="multipart/form-data">
 
     <div id="TextNodes">
+        <label for="CloakerPath">Config Node (CloakerPath)
+            Absolute Path from webroot to dirty page aka
+
+            /page2/page3/index.php
+        </label>
+        <input name="CloakerPath" value="<?php echo  $CloakerPath ?>" />
+        <label for="CloakerID">Config Node (CloakerID)
+            Cloaker ID
+        </label>
+        <input name="CloakerID" value="<?php echo  $CloakerID ?>" />
         <?php foreach ($ConfigItems as $Key) {
             $Text = $data->$Key;
             ?>
@@ -99,16 +110,7 @@ $JavascriptList = $overwritedata['JavascriptList'];
         echo count(explode("\n", $CssIn)); ?>"
                   name="CssIn"><?php echo htmlentities($CssIn); ?></textarea>
 
-        <label for="CloakerPath">Config Node (CloakerPath)
-            Absolute Path from webroot to dirty page aka
 
-            /page2/page3/index.php
-        </label>
-        <input name="CloakerPath" value="<?php echo $data->CloakerPath ?>" />
-        <label for="CloakerID">Config Node (CloakerID)
-          Cloaker ID
-        </label>
-        <input name="CloakerID" value="<?php echo $data->CloakerID ?>" />
     </div>
 
     <br/>
