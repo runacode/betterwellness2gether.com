@@ -399,17 +399,13 @@
 
 
                     <!-- /snippets/social-sharing.liquid -->
-                    <ul class="social-sharing">
-
-                        <?php $ContentIndex = 4; ?>
-                        <?php include("{$BasePath}/Structures/Sections/Content.php"); ?>
-
-
-
-                    </ul>
 
 
                 </div>
+                <?php $ContentIndex = 4; ?>
+                <?php include("{$BasePath}/Structures/Sections/Content.php"); ?>
+
+
             </div>
         </div>
 
