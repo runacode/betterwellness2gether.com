@@ -42,29 +42,31 @@ if (!preg_match('/\[\]$/', $_REQUEST['dp'])) {
 <html>
 <head>
 
-    <link rel="stylesheet"
-          href="/assets/css/main<?php if (isset($_REQUEST['variation'])) echo $_REQUEST['variation']; ?>.css"/>
+
+    <!-- Main Quill library -->
+    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+    <!-- Theme included stylesheets -->
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+    <script src="image-upload-q.min.js"></script>
 </head>
 <body>
 
 <form method="post" enctype="multipart/form-data">
     <button type="submit" name="Delete">Delete this node (careful no undo)</button>
-
+<button onclick="SwitchEditor()" type="button">Switch Editor</button>
     <div id="TextNodes">
         <br/>
         <?php foreach ($Content->Text as $Text) { ?>
             <div>
                 <label for="Text">Html sections
-                    <br/>
-                    <button type="button" onclick="$(this).parent().parent().remove()">delete this html section</button>
-                    <button type="button" class="  primary" onclick="AddNode($(this).parent().parent())">Add Html
-                        section
-                        Before this one
-                    </button>
-                    <button type="button" onclick="AddNode()">Add Html section After</button>
+
                 </label>
-                <textarea rows="<?php echo count(explode("\n", $Text)); ?>"
-                          name="Text[]"><?php echo htmlentities($Text); ?></textarea>
+                <div class="editor"><?php echo $Text; ?></div>
+                <textarea id="Editor" style="display:none;width:100%;height:40vh"
+                          name="Text[]"> </textarea>
             </div>
         <?php } ?>
 
@@ -75,16 +77,12 @@ if (!preg_match('/\[\]$/', $_REQUEST['dp'])) {
         ?>
         <div>
             <label for="Text">Html sections
-                <br/>
-                <button type="button" onclick="$(this).parent().parent().remove()">delete this html section</button>
-                <button type="button" class="  primary" onclick="AddNode($(this).parent().parent())">Add Html
-                    section
-                    Before this one
-                </button>
-                <button type="button" onclick="AddNode()">Add Html section After</button>
+
+
             </label>
-            <textarea rows="<?php echo count(explode("\n", $Text)); ?>"
-                      name="Text[]"><?php echo htmlentities($Text); ?></textarea>
+            <div class="editor"></div>
+            <textarea id="Editor"
+                      name="Text[]"></textarea>
         </div>
         <?php
     }
@@ -110,6 +108,75 @@ if (!preg_match('/\[\]$/', $_REQUEST['dp'])) {
             "                </label>\n" +
             "                <textarea name=\"Text[]\"></textarea>"))
     }
+
+    function SwitchEditor() {
+        $('.editor').toggle();
+        $('.ql-toolbar').toggle();
+        var Text = document.querySelector('#Editor');
+        Text.value = Edtiro.container.firstChild.innerHTML;
+        $('#Editor').toggle()
+
+    }
+
+    var Edtiro;
+    $(document).ready(function () {
+
+        var form = document.querySelector('form');
+        form.onsubmit = function () {
+            // Populate hidden form on submit
+            var Text = document.querySelector('#Editor');
+            Text.value = Edtiro.container.firstChild.innerHTML;
+
+
+        };
+        var options = {
+            debug: 'info',
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                    ['blockquote', 'code-block'],
+
+                    [{'header': 1}, {'header': 2}],               // custom button values
+                    [{'list': 'ordered'}, {'list': 'bullet'}],
+                    [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
+                    [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
+                    [{'direction': 'rtl'}],                         // text direction
+
+                    [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
+                    [{'header': [1, 2, 3, 4, 5, 6, false]}],
+
+                    [{'color': []}, {'background': []}],          // dropdown with defaults from theme
+                    [{'font': []}],
+                    [{'align': []}],
+
+                    ['clean'],                                         // remove formatting button
+                    ['image']
+                ]
+            },
+            imageUpload: {
+                url: 'UploadImage.php?json=true', // server url. If the url is empty then the base64 returns
+                method: 'POST', // change query method, default 'POST'
+                name: 'UploadImage', // custom form name
+                withCredentials: false, // withCredentials
+                headers: {}, // add custom headers, example { token: 'your-token'}
+                // personalize successful callback and call next function to insert new url to the editor
+                callbackOK: (serverResponse, next) => {
+                    Edtiro.insertEmbed(range.index, 'image', serverResponse.file, Quill.sources.USER);
+
+                    next(serverResponse);
+                },
+                // personalize failed callback
+                callbackKO: serverError => {
+                    alert(serverError);
+                }
+            }
+        }
+
+
+        Edtiro = new Quill('.editor', options);
+    })
+    ;
 </script>
 </body>
 </html>
