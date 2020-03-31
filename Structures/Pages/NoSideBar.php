@@ -15,9 +15,12 @@
             <?php include("{$BasePath}/Structures/Sections/Content.php"); ?>
         </div>
     </div>
-</div>
-<div class="container comments">
+
+    <div class="container comments">
+        <?php $ContentIndex = 4; ?>
+        <?php include("{$BasePath}/Structures/Sections/Content.php"); ?>
+    </div>
 
 </div>
-<?php $ContentIndex = 4; ?>
+<?php $ContentIndex = 5; ?>
 <?php include("{$BasePath}/Structures/Sections/Content.php"); ?>
