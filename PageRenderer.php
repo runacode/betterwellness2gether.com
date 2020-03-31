@@ -21,7 +21,7 @@ if (isset($data->Structure) && file_exists($PageStructure)) {
 <?php
 if ($EditMode) {
     ?>
-    <a href="#"
+    <a href="#" style="position: absolute ;top:25px ;left 10px;"
        datatype="ConfigEditor"
        data-position="SiteTextLogo"
     >Edit</a>
